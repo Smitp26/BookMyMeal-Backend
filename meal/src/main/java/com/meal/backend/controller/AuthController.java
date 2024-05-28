@@ -70,12 +70,7 @@ public class AuthController {
             response.getWriter().flush();
             return null;
         }
-//        }catch(BadCredentialsException e){
-//            throw new BadCredentialsException("Incorrect UserName or Password");
-//        }catch(DisabledException disabledException){
-//            response.sendError(HttpServletResponse.SC_NOT_FOUND, "User Not Active");
-//            return null;
-//        }
+
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
         final String jwt = jwtUtil.generateToken(userDetails.getUsername());
         Optional<Employee> optionalUser = employeeRepository.findFirstByEmail(userDetails.getUsername());
