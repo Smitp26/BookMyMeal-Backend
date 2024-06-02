@@ -29,7 +29,6 @@ public class SimpleCorsFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        Map<String, String> map = new HashMap<>();
         String originHeader = request.getHeader("Origin");
 
         if(originHeader != null && allowedOrigins.contains(originHeader)){

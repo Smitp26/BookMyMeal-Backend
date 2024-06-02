@@ -6,8 +6,6 @@ import lombok.*;
 
 @Entity
 @Data
-@Getter
-@Setter
 @Builder
 @Table(name = "user")
 @AllArgsConstructor
@@ -26,6 +24,4 @@ public class Employee {
 
     private UserRole userRole;
 
-    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Coupon coupon;
 }

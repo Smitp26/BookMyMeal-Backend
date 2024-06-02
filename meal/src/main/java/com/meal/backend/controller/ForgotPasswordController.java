@@ -9,14 +9,10 @@ import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @CrossOrigin("**")
 @RestController
@@ -45,19 +41,21 @@ public class ForgotPasswordController {
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<Map<String, String>> sendOtp(@RequestParam String email) throws MessagingException {
-        Map<String, String> response = new HashMap<>();
-        Employee employee = userService.findByEmail(email);
 
-        if (employee == null) {
-            response.put("message", "User not found");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
+        public ResponseEntity<Map<String, String>> sendOtp(@RequestParam String email) throws MessagingException {
 
-        Otp otp = otpService.createOtp(employee);
-        //emailService.sendOtpEmail(employee.getEmail(), otp.getOtp());
-        response.put("message", "OTP has been sent to your email");
-        return ResponseEntity.ok(response);
+            Map<String, String> response = new HashMap<>();
+
+            Employee employee = userService.findByEmail(email);
+
+            if (employee == null) {
+                response.put("message", "User not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+
+            Otp otp = otpService.createOtp(employee);
+            response.put("message", "OTP has been sent to your email");
+            return ResponseEntity.ok(response);
     }
 
     @PostMapping("/verify-otp")
@@ -114,18 +112,22 @@ public class ForgotPasswordController {
     }
 
     @PostMapping("/change-password")
-    public ResponseEntity<?> changePassword(@RequestParam String email, @RequestParam String oldPassword, @RequestParam String newPassword) {
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
+        String email = changePasswordRequest.getEmail();
+        String oldPassword = changePasswordRequest.getOldPassword();
+        String newPassword = changePasswordRequest.getNewPassword();
+
         Employee user = userService.findByEmail(email);
 
         if (user == null) {
-            return ResponseEntity.status(404).body("User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "User not found"));
         }
 
-        if(!bCryptPasswordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword())){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Old password is incorrect");
+        if (!bCryptPasswordEncoder.matches(oldPassword, user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Old password is incorrect"));
         }
 
         userService.updatePassword(user, newPassword);
-        return ResponseEntity.ok("Password has been successfully changed");
+        return ResponseEntity.ok(Map.of("message", "Password has been successfully changed"));
     }
 }

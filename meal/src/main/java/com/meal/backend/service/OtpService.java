@@ -29,9 +29,6 @@ public class OtpService {
             otp.setUser(employee);
         }
 
-//        otp.setOtp(generateOtp());
-//        otp.setExpiryDate(calculateExpiryDate(5));
-//        return otpRepository.save(otp);
 
         String generatedOtp = generateOtp();
         otp.setOtp(generatedOtp);
