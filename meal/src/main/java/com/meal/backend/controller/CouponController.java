@@ -45,7 +45,7 @@ public class CouponController {
     public ResponseEntity<?> redeemCoupon(@RequestParam String couponId) {
         try {
             couponService.redeemCoupon(couponId);
-            return ResponseEntity.ok("Coupon redeemed successfully");
+            return ResponseEntity.ok("Coupon Redeemed successfully");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to redeem coupon. " + e.getMessage());

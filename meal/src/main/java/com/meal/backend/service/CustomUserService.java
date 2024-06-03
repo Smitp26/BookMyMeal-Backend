@@ -1,7 +1,6 @@
 package com.meal.backend.service;
 
 import com.meal.backend.repository.BookingRepository;
-import com.meal.backend.service.jwt.UserDetailsServiceImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,11 +9,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserService {
 
-    private final UserDetailsServiceImpl userDetailsService; // Inject UserDetailsServiceImpl
+    private final AuthServiceImpl.UserDetailsServiceImpl userDetailsService; // Inject UserDetailsServiceImpl
     private final BookingRepository bookingRepository;
 
 
-    public CustomUserService(UserDetailsServiceImpl userDetailsService, BookingRepository bookingRepository) {
+    public CustomUserService(AuthServiceImpl.UserDetailsServiceImpl userDetailsService, BookingRepository bookingRepository) {
         this.userDetailsService = userDetailsService;
         this.bookingRepository = bookingRepository;
     }

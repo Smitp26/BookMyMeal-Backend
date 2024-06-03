@@ -1,4 +1,4 @@
-package com.meal.backend.cofig;
+package com.meal.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

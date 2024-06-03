@@ -9,7 +9,6 @@ import com.meal.backend.enums.MealType;
 import com.meal.backend.enums.Status;
 import com.meal.backend.repository.BookingRepository;
 import com.meal.backend.repository.EmployeeRepository;
-import com.meal.backend.service.jwt.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +30,7 @@ public class BookingService {
     @Autowired
     private NotificationService notificationService;
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private final AuthServiceImpl.UserDetailsServiceImpl userDetailsService;
 
     private static final LocalTime BOOKING_CUTOFF_TIME = LocalTime.of(20, 0);
 
@@ -268,7 +267,7 @@ public class BookingService {
     }
 
     @Autowired
-    public BookingService(BookingRepository bookingRepository, UserDetailsServiceImpl userDetailsService) {
+    public BookingService(BookingRepository bookingRepository, AuthServiceImpl.UserDetailsServiceImpl userDetailsService) {
         this.bookingRepository = bookingRepository;
         this.userDetailsService = userDetailsService;
     }

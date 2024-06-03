@@ -7,7 +7,7 @@ import com.meal.backend.dto.SignupRequest;
 import com.meal.backend.entity.Employee;
 import com.meal.backend.repository.EmployeeRepository;
 import com.meal.backend.service.AuthService;
-import com.meal.backend.service.jwt.UserDetailsServiceImpl;
+import com.meal.backend.service.AuthServiceImpl;
 import com.meal.backend.service.util.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -27,11 +27,11 @@ public class AuthController {
 
     private final AuthService authService;
     private final AuthenticationManager authenticationManager;
-    private final UserDetailsServiceImpl userDetailsService;
+    private final AuthServiceImpl.UserDetailsServiceImpl userDetailsService;
     private final JwtUtil jwtUtil;
     private final EmployeeRepository employeeRepository;
 
-    public AuthController(AuthService authService, AuthenticationManager authenticationManager, UserDetailsServiceImpl userDetailsService, JwtUtil jwtUtil, EmployeeRepository employeeRepository) {
+    public AuthController(AuthService authService, AuthenticationManager authenticationManager, AuthServiceImpl.UserDetailsServiceImpl userDetailsService, JwtUtil jwtUtil, EmployeeRepository employeeRepository) {
         this.authService = authService;
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
@@ -43,6 +43,7 @@ public class AuthController {
     public ResponseEntity<String> home(){
         return ResponseEntity.ok("Welcome to home page!");
     }
+
 
     @PostMapping("/signup")
     public ResponseEntity<?> signupuser(@RequestBody SignupRequest signupRequest ){
@@ -77,6 +78,7 @@ public class AuthController {
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         if(optionalUser.isPresent()){
             authenticationResponse.setJwt(jwt);
+            authenticationResponse.setName(optionalUser.get().getName());
             authenticationResponse.setUserRole(optionalUser.get().getUserRole());
             authenticationResponse.setUserId((optionalUser.get().getId()));
         }
